@@ -196,21 +196,26 @@
 
 <script>
   /* ====== CONFIGURE AQUI (veja o passo a passo no arquivo COMO_PUBLICAR_NO_GITHUB.md) ====== */
-  const REPO       = "SEU_USUARIO/SEU_REPOSITORIO";     // ex.: "joaosilva/nhcad"
+  const REPO       = "nilberthsouza/NHCAD";             // usuário/repositório no GitHub
+  const MODO       = "releases";   // "pages": os .exe ficam na pasta downloads/ deste mesmo site | "releases": GitHub Releases
   const INSTALADOR = "Instalar_NHCAD.exe";               // nome do arquivo anexado na Release
   const PORTATIL   = "NHCAD.exe";
   const VERSAO     = "1.0";
   const CONTATO    = { whatsapp: "5511999999999", email: "contato@seudominio.com" };  // troque pelos seus
   /* ================================================================================== */
 
-  const base = `https://github.com/${REPO}/releases/latest/download/`;
+  const base = MODO === "releases" ? `https://github.com/${REPO}/releases/latest/download/` : "downloads/";
   document.getElementById("download-btn").href = base + INSTALADOR;
   document.getElementById("portable-link").href = base + PORTATIL;
   document.getElementById("ver").textContent = VERSAO;
   document.getElementById("ano").textContent = new Date().getFullYear();
   const msg = encodeURIComponent("Olá! Quero uma licença do NH CAD. Meu número de instalação é: ");
-  document.getElementById("contato-btn").href = `https://wa.me/${CONTATO.whatsapp}?text=${msg}`;
-  document.getElementById("contato-btn").title = CONTATO.email;
+  const cb = document.getElementById("contato-btn");
+  const semZap = !CONTATO.whatsapp || CONTATO.whatsapp.startsWith("551199999");
+  const semMail = !CONTATO.email || CONTATO.email.includes("seudominio");
+  if (!semZap) { cb.href = `https://wa.me/${CONTATO.whatsapp}?text=${msg}`; }
+  else if (!semMail) { cb.href = `mailto:${CONTATO.email}?subject=${encodeURIComponent("Licença NH CAD")}&body=${msg}`; }
+  else { cb.outerHTML = '<span style="color:var(--mut)">Para solicitar a licença, entre em contato com o fornecedor do software.</span>'; }
 
   const lb = document.getElementById("lb"), lbi = lb.querySelector("img");
   document.querySelectorAll("figure img, .shot img").forEach(i => i.addEventListener("click", () => { lbi.src = i.src; lb.style.display = "flex"; }));

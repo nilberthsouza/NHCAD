@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NH CAD — Projeto de redes de distribuição de energia</title>
+<meta name="description" content="NH CAD: software para projetar redes de distribuição de energia sobre mapa de satélite, com simbologia, estruturas, UTM automático e exportação de pranchas em PDF e DXF. Teste grátis por 15 dias.">
+<link rel="icon" href="img/favicon.png">
+<style>
+  :root{
+    --bg:#14171c; --bg2:#1b1f26; --card:#222730; --line:#323945; --txt:#e6e9ee; --mut:#9aa4b2;
+    --acc:#1e9bff; --acc2:#0b5cad; --ok:#6fe08a; --warn:#f0c040;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.6 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif}
+  a{color:var(--acc)}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+  header.top{position:sticky;top:0;z-index:20;background:rgba(20,23,28,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  header.top .wrap{display:flex;align-items:center;gap:18px;height:62px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;color:var(--txt);text-decoration:none}
+  .brand img{width:34px;height:34px;border-radius:8px}
+  nav{margin-left:auto;display:flex;gap:18px;flex-wrap:wrap}
+  nav a{color:var(--mut);text-decoration:none;font-size:15px}
+  nav a:hover{color:var(--txt)}
+  .btn{display:inline-block;background:var(--acc);color:#04111f;font-weight:700;padding:13px 26px;border-radius:10px;text-decoration:none;border:0;cursor:pointer;font-size:17px}
+  .btn:hover{filter:brightness(1.1)}
+  .btn.sec{background:transparent;color:var(--txt);border:1px solid var(--line)}
+  .hero{padding:64px 0 30px;text-align:center;background:radial-gradient(1000px 420px at 50% -80px,#12365f 0,transparent 70%)}
+  .hero img.logo{width:120px;height:120px;border-radius:26px;box-shadow:0 10px 40px #0008}
+  .hero h1{font-size:clamp(30px,5vw,50px);margin:18px 0 8px;line-height:1.15}
+  .hero p.sub{color:var(--mut);font-size:19px;max-width:760px;margin:0 auto 26px}
+  .hero .cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .hero small{display:block;margin-top:14px;color:var(--mut)}
+  .shot{margin:34px auto 0;max-width:1060px;border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:0 20px 60px #000a}
+  .shot img{display:block;width:100%;height:auto}
+  section{padding:56px 0}
+  section h2{font-size:30px;margin:0 0 8px}
+  section p.lead{color:var(--mut);margin:0 0 28px;max-width:760px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:16px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .card h3{margin:0 0 6px;font-size:18px}
+  .card p{margin:0;color:var(--mut);font-size:15px}
+  .ico{font-size:26px;margin-bottom:6px}
+  .alt{background:var(--bg2);border-block:1px solid var(--line)}
+  .gal{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px}
+  figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  figure img{display:block;width:100%;height:auto;cursor:zoom-in}
+  figcaption{padding:12px 16px;color:var(--mut);font-size:14px}
+  figcaption b{color:var(--txt)}
+  table{width:100%;border-collapse:collapse;background:var(--card);border-radius:14px;overflow:hidden}
+  th,td{padding:14px 16px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:#1a2029;color:var(--mut);font-weight:600;font-size:14px;text-transform:uppercase;letter-spacing:.04em}
+  tr:last-child td{border-bottom:0}
+  .tag{display:inline-block;padding:2px 10px;border-radius:99px;font-size:13px;font-weight:700}
+  .t1{background:#3a3315;color:var(--warn)} .t2{background:#10303f;color:#6cc7ff} .t3{background:#123a1f;color:var(--ok)} .t0{background:#33261c;color:#ffb070}
+  ol.steps{counter-reset:s;list-style:none;padding:0;margin:0;display:grid;gap:14px}
+  ol.steps li{counter-increment:s;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px 16px 64px;position:relative}
+  ol.steps li::before{content:counter(s);position:absolute;left:18px;top:14px;width:32px;height:32px;border-radius:50%;background:var(--acc2);display:grid;place-items:center;font-weight:700}
+  details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:10px}
+  summary{cursor:pointer;font-weight:600}
+  details p{color:var(--mut);margin:10px 0 0}
+  .dl{background:linear-gradient(135deg,#0d2c4d,#162033);border:1px solid #28507f;border-radius:18px;padding:36px;text-align:center}
+  .dl h2{margin-bottom:8px}
+  footer{padding:34px 0;border-top:1px solid var(--line);color:var(--mut);font-size:14px;text-align:center}
+  #lb{position:fixed;inset:0;background:#000d;display:none;align-items:center;justify-content:center;z-index:50;cursor:zoom-out;padding:16px}
+  #lb img{max-width:96vw;max-height:94vh;border-radius:8px}
+  code.k{background:#0e1218;border:1px solid var(--line);padding:2px 8px;border-radius:6px;color:#9fe0ff}
+  @media(max-width:700px){nav{display:none}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#"><img src="img/logo.png" alt="NH CAD"> NH CAD</a>
+    <nav>
+      <a href="#recursos">Recursos</a>
+      <a href="#prints">Telas</a>
+      <a href="#licencas">Licenças</a>
+      <a href="#instalar">Como instalar</a>
+      <a href="#faq">Dúvidas</a>
+    </nav>
+    <a class="btn dl-link" href="#baixar" style="padding:8px 18px;font-size:15px">Baixar</a>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <img class="logo" src="img/logo.png" alt="Logo NH CAD">
+    <h1>Projete redes de distribuição<br>direto sobre o mapa de satélite</h1>
+    <p class="sub">Postes, estruturas, equipamentos, vãos, estais e UTM automático — com prancha pronta para exportar em <b>PDF</b> ou <b>DXF</b> (A1 a A4).</p>
+    <div class="cta">
+      <a class="btn dl-link" href="#baixar">⬇ Baixar para Windows</a>
+      <a class="btn sec" href="#prints">Ver o programa</a>
+    </div>
+    <small>Teste gratuito por 15 dias • Windows 10/11 • Não precisa de Python</small>
+    <div class="shot"><img src="img/01_tela_principal_satelite.jpg" alt="Tela principal do NH CAD com mapa de satélite e rede de distribuição"></div>
+  </div>
+</div>
+
+<section id="recursos">
+  <div class="wrap">
+    <h2>Tudo para o projeto da rede, num só lugar</h2>
+    <p class="lead">Do lançamento dos postes à prancha plotada, sem trocar de programa.</p>
+    <div class="grid">
+      <div class="card"><div class="ico">🛰️</div><h3>Mapa real</h3><p>Satélite, ruas e topográfico. Ajuste a opacidade, oculte quando quiser e salve locais favoritos. Busca por endereço, lat/long ou UTM.</p></div>
+      <div class="card"><div class="ico">📍</div><h3>Postes e estruturas</h3><p>Concreto circular, duplo T, madeira e metálico. Estruturas N1–N4, HT/HTT, compactas CM/CE e transições (ex.: N3-N4), altura e esforço.</p></div>
+      <div class="card"><div class="ico">⚡</div><h3>Equipamentos</h3><p>Transformador (poste, solo, chave deslocada), para-raios, aterramento, chave fusível, chave faca, religador, capacitor, sensor, TME, luminária.</p></div>
+      <div class="card"><div class="ico">〰️</div><h3>Vãos e cabos</h3><p>Escolha condutores, bitola e cabo: <code class="k">3#1/0 (2) CAA</code>. Distância automática pelo mapa e ângulo de mudança de direção calculado.</p></div>
+      <div class="card"><div class="ico">🧭</div><h3>UTM automático</h3><p>Cada poste recebe sua coordenada UTM. Exporte o quadro de postes em CSV.</p></div>
+      <div class="card"><div class="ico">🏘️</div><h3>Ruas, prédios e árvores</h3><p>Desenhe ruas com calçadas, edificações, polilinhas, círculos, arcos, retângulos, árvores e textos.</p></div>
+      <div class="card"><div class="ico">🖨️</div><h3>Pranchas profissionais</h3><p>Carimbo com logo da empresa, tabela de instruções para plotagem, várias pranchas na mesma tela e exportação PDF/DXF em A1, A2, A3 e A4.</p></div>
+      <div class="card"><div class="ico">🚀</div><h3>Produtividade</h3><p>Modo Rápido com padrão configurável, textos arrastáveis, atalhos de teclado, desfazer/refazer e tema escuro estilo CAD.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="prints" class="alt">
+  <div class="wrap">
+    <h2>O programa por dentro</h2>
+    <p class="lead">Capturas reais de tela do NH CAD (clique para ampliar).</p>
+    <div class="gal">
+      <figure><img src="img/02_simbologia_cad_escuro.png" alt="Rede com simbologia em fundo escuro estilo CAD"><figcaption><b>Fundo escuro estilo CAD</b> — poste, estruturas, equipamentos, ruas, edificações e árvores.</figcaption></figure>
+      <figure><img src="img/03_detalhe_poste_equipamentos.png" alt="Detalhe de postes, equipamentos e cabos"><figcaption><b>Detalhe da simbologia</b> — numeração em losango, estrutura, altura/esforço, coordenada UTM, ângulo e cabos.</figcaption></figure>
+      <figure><img src="img/04_prancha_exportada.jpg" alt="Prancha exportada com carimbo e tabela de plotagem"><figcaption><b>Prancha exportada</b> — carimbo, escala, folha e instruções para plotagem sobre o mapa.</figcaption></figure>
+      <figure><img src="img/05_dialogo_poste.png" alt="Janela de propriedades do poste"><figcaption><b>Propriedades do poste</b> — estrutura, transição, equipamentos em lista suspensa.</figcaption></figure>
+      <figure><img src="img/06_dialogo_vao.png" alt="Janela de propriedades do vão"><figcaption><b>Propriedades do vão</b> — condutores, bitola, neutro e cabo, com prévia do texto.</figcaption></figure>
+      <figure><img src="img/07_ativacao_licenca.png" alt="Tela de ativação com número de instalação"><figcaption><b>Ativação</b> — o número de instalação aparece ao abrir; a chave é informada uma única vez.</figcaption></figure>
+    </div>
+    <p style="color:var(--mut);font-size:13px;margin-top:16px">Imagens de satélite: Esri, Maxar, Earthstar Geographics e comunidade de usuários GIS. As redes mostradas são exemplos ilustrativos.</p>
+  </div>
+</section>
+
+<section id="licencas">
+  <div class="wrap">
+    <h2>Licenças</h2>
+    <p class="lead">Baixe, instale e use <b>15 dias grátis</b>. Para continuar, solicite a licença ideal para você.</p>
+    <table>
+      <tr><th>Tipo</th><th>Duração</th><th>Para quem</th></tr>
+      <tr><td><span class="tag t0">Teste</span></td><td>15 dias após instalar</td><td>Conhecer o programa sem compromisso.</td></tr>
+      <tr><td><span class="tag t1">Provisória</span></td><td>+15 dias</td><td>Estender a avaliação ou um projeto pontual.</td></tr>
+      <tr><td><span class="tag t2">Professor</span></td><td>1 ano</td><td>Docentes e instituições de ensino.</td></tr>
+      <tr><td><span class="tag t3">Vitalícia</span></td><td>Sem prazo, enquanto instalado</td><td>Uso profissional contínuo no computador instalado.</td></tr>
+    </table>
+    <p style="color:var(--mut);margin-top:14px">A licença é vinculada ao <b>número de instalação</b> do seu computador. A quantidade de dias restantes aparece sempre no título da janela do programa.</p>
+    <p><a class="btn sec" id="contato-btn" href="#">Solicitar licença</a></p>
+  </div>
+</section>
+
+<section id="instalar" class="alt">
+  <div class="wrap">
+    <h2>Como instalar e ativar</h2>
+    <p class="lead">Leva menos de 2 minutos.</p>
+    <ol class="steps">
+      <li><b>Baixe</b> o instalador <code class="k">Instalar_NHCAD.exe</code> (botão abaixo).</li>
+      <li>Execute-o. Se o Windows exibir <i>“O Windows protegeu seu computador”</i>, clique em <b>Mais informações → Executar assim mesmo</b>.</li>
+      <li>Escolha a pasta, marque os atalhos e clique em <b>Instalar</b>. Não exige administrador.</li>
+      <li>Ao abrir o NH CAD, aparece o seu <b>número de instalação</b> (ex.: <code class="k">7F56-1C11-EA3C-B17B</code>). Clique em <b>Continuar teste</b> para usar por 15 dias.</li>
+      <li>Para ativar uma licença: copie o número de instalação, envie para nós, receba a <b>chave</b> e cole na tela de ativação (menu <i>Ajuda → Licença</i>). Só é preciso fazer isso <b>uma vez</b>.</li>
+    </ol>
+  </div>
+</section>
+
+<section id="baixar">
+  <div class="wrap">
+    <div class="dl">
+      <h2>Baixar o NH CAD</h2>
+      <p style="color:var(--mut);margin:0 0 20px">Versão <span id="ver">1.0</span> para Windows 10/11 (64 bits) • teste de 15 dias</p>
+      <a class="btn" id="download-btn" href="#">⬇ Baixar instalador (.exe)</a>
+      <p style="color:var(--mut);font-size:14px;margin:18px 0 0">Prefere sem instalar? Baixe a <a id="portable-link" href="#">versão portátil</a> (mesmo período de teste).</p>
+    </div>
+  </div>
+</section>
+
+<section id="faq" class="alt">
+  <div class="wrap">
+    <h2>Dúvidas frequentes</h2>
+    <details><summary>O Windows disse que o arquivo é desconhecido. É seguro?</summary><p>O instalador ainda não possui assinatura digital paga, por isso o SmartScreen mostra o aviso. Clique em “Mais informações” e “Executar assim mesmo”. Baixe sempre desta página.</p></details>
+    <details><summary>O que acontece quando acabam os 15 dias?</summary><p>O programa deixa de abrir projetos até que uma chave de licença seja informada. Seus arquivos <code class="k">.rdist</code> não são apagados.</p></details>
+    <details><summary>Preciso de internet?</summary><p>Somente para carregar o mapa (os tiles ficam em cache no computador) e para a busca de endereços. A licença funciona offline.</p></details>
+    <details><summary>Posso usar a mesma chave em outro computador?</summary><p>Não. Cada chave é gerada para um número de instalação específico. Em outro computador, solicite outra licença.</p></details>
+    <details><summary>E se eu desinstalar?</summary><p>A licença vitalícia vale enquanto o programa estiver instalado: ao desinstalar, ela é removida e uma nova instalação gera um novo número e exige nova chave. O período de teste não reinicia ao reinstalar.</p></details>
+    <details><summary>Exporta para AutoCAD?</summary><p>Sim: DXF em metros, com coordenadas UTM reais, camadas e espessuras definidas na tabela de plotagem. Também exporta PDF em A1, A2, A3 e A4.</p></details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    © <span id="ano"></span> NH CAD — todos os direitos reservados.<br>
+    Mapas: Esri World Imagery / World Street Map, © OpenStreetMap contributors, OpenTopoMap (CC-BY-SA).
+  </div>
+</footer>
+
+<div id="lb"><img alt=""></div>
+
+<script>
+  /* ====== CONFIGURE AQUI (veja o passo a passo no arquivo COMO_PUBLICAR_NO_GITHUB.md) ====== */
+  const REPO       = "SEU_USUARIO/SEU_REPOSITORIO";     // ex.: "joaosilva/nhcad"
+  const INSTALADOR = "Instalar_NHCAD.exe";               // nome do arquivo anexado na Release
+  const PORTATIL   = "NHCAD.exe";
+  const VERSAO     = "1.0";
+  const CONTATO    = { whatsapp: "5511999999999", email: "contato@seudominio.com" };  // troque pelos seus
+  /* ================================================================================== */
+
+  const base = `https://github.com/${REPO}/releases/latest/download/`;
+  document.getElementById("download-btn").href = base + INSTALADOR;
+  document.getElementById("portable-link").href = base + PORTATIL;
+  document.getElementById("ver").textContent = VERSAO;
+  document.getElementById("ano").textContent = new Date().getFullYear();
+  const msg = encodeURIComponent("Olá! Quero uma licença do NH CAD. Meu número de instalação é: ");
+  document.getElementById("contato-btn").href = `https://wa.me/${CONTATO.whatsapp}?text=${msg}`;
+  document.getElementById("contato-btn").title = CONTATO.email;
+
+  const lb = document.getElementById("lb"), lbi = lb.querySelector("img");
+  document.querySelectorAll("figure img, .shot img").forEach(i => i.addEventListener("click", () => { lbi.src = i.src; lb.style.display = "flex"; }));
+  lb.addEventListener("click", () => lb.style.display = "none");
+  document.addEventListener("keydown", e => { if (e.key === "Escape") lb.style.display = "none"; });
+</script>
+</body>
+</html>
